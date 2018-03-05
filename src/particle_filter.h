@@ -109,12 +109,26 @@ public:
 	std::string getSenseX(Particle best);
 	std::string getSenseY(Particle best);
 
+
 	/**
 	* initialized Returns whether particle filter is initialized yet or not.
 	*/
 	const bool initialized() const {
 		return is_initialized;
 	}
+	
+	/*
+	 * Utility function to convert from car coordinates to map coordinates
+	 *
+	 */
+	std::vector<LandmarkObs> ToMapCoordinates(Particle particle, const std::vector<LandmarkObs> observations);
+	/*
+	 * Utility function to get nearby landmarks
+	 *
+	 */
+	std::vector<LandmarkObs> GetNearbyLandmarks(Particle particle, const Map& landmarks, double sensor_range);
+	
+	double GetProbability(LandmarkObs observation, LandmarkObs landmark, double std_landmark[]);
 };
 
 
