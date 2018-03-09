@@ -66,8 +66,8 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 		}
 		else
 		{
-		particle.x += velocity/yaw_rate * (sin(particle.theta+yaw_rate*delta_t)-sin(particle.theta));
-		particle.y += velocity/yaw_rate * (cos(particle.theta)-cos(particle.theta+yaw_rate*delta_t));
+			particle.x += velocity/yaw_rate * (sin(particle.theta+yaw_rate*delta_t)-sin(particle.theta));
+			particle.y += velocity/yaw_rate * (cos(particle.theta)-cos(particle.theta+yaw_rate*delta_t));
 			particle.theta += yaw_rate*delta_t;
 			
 		}
@@ -141,13 +141,9 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 				{
 					probability *= GetProbability(observation, landmark, std_landmark);
 				}
-				
-				
 			}
 		}
 		weights[i] = probability;
-		//std::cout << "weight["<< i<<"] : " << probability << std::endl;
-
 	}
 }
 
@@ -163,7 +159,6 @@ void ParticleFilter::resample() {
 	for (double weight : weights)
 	{
 		normalized.push_back(weight*100/max);
-		//std::cout << "Weight :" << weight <<std::endl;
 	}
 	
 	std::vector<Particle> resampled;
@@ -177,12 +172,9 @@ void ParticleFilter::resample() {
 			beta -= normalized[index];
 			index = (index+1)%normalized.size();
 		}
-		//std::cout << "resampled[" <<resampled.size() << "] : particles[" <<index <<"]" << std::endl;
 		resampled.push_back(particles[index]);
-		
 	}
 	particles = resampled;
-
 }
 
 
@@ -270,6 +262,6 @@ double ParticleFilter::GetProbability(LandmarkObs observation, LandmarkObs landm
 	double delta_x = observation.x - landmark.x;
 	double delta_y = observation.y - landmark.y;
 	double prob = 1.0/(2*M_PI*std_x*std_y) * exp(-(delta_x*delta_x/(2*std_x*std_x)+delta_y*delta_y/(2*std_y*std_y)));
-	//std::cout << "std_x, std_y, d_x, d_y :: prob " << std_x << ", " << std_y << ", " << delta_x << ", " << delta_y << " :: " << prob <<std::endl;
+
 	return prob;
 }
